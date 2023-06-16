@@ -3,9 +3,9 @@
 		<bitmap id="LauncherIcon" filename="logo.png"/>
 	</drawables>
     <fonts>
-        <font id="NotoSans_Light_32" filename="fonts/NotoSans-Light-32.fnt" antialias="true" filter="0123456789%FMSTWadehinortu" />
-        <font id="NotoSans_Light_48" filename="fonts/NotoSans-Light-48.fnt" antialias="true" filter="0123456789/ " />
-        <font id="NotoSans_Light_160" filename="fonts/NotoSans-Light-160.fnt" antialias="true" filter="0123456789:" />
+        <font id="Small" filename="fonts/Roboto-Light-24.fnt" antialias="true" filter="0123456789%FMSTWadehinortu" />
+        <font id="Medium" filename="fonts/Roboto-Light-32.fnt" antialias="true" filter="0123456789/ " />
+        <font id="Large" filename="fonts/Roboto-Thin-120.fnt" antialias="true" filter="0123456789:" />
     </fonts>
     <strings>
         <string id="AppName">NotoRunner</string>

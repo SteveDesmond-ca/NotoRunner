@@ -14,20 +14,19 @@ class View extends WatchUi.WatchFace {
 	private var _middle as Number = 0;
 	private var _bottom as Number = 0;
 
-	private var _font as Dictionary<Number, FontResource> = {};
+	private var _font as Dictionary<String, FontResource> = {};
 	
 	function initialize() {
 		_font = {
-			160 => WatchUi.loadResource(Rez.Fonts.NotoSans_Light_160),
-			48 => WatchUi.loadResource(Rez.Fonts.NotoSans_Light_48),
-			32 => WatchUi.loadResource(Rez.Fonts.NotoSans_Light_32)
+			"L" => WatchUi.loadResource(Rez.Fonts.Large),
+			"M" => WatchUi.loadResource(Rez.Fonts.Medium),
+			"S" => WatchUi.loadResource(Rez.Fonts.Small)
 		};
 		
 		WatchFace.initialize();
 	}
 
 	function onLayout(dc as Dc) {
-		Clear(dc, null);
 		dc.setAntiAlias(true);
 		
 		_width = dc.getWidth();
@@ -38,74 +37,31 @@ class View extends WatchUi.WatchFace {
 		_bottom = _height * 5/6;
 	}
 
-	private var _lastMinute as Number? = null;
-	private var _lastTime as Gregorian.Info? = null;
-	private var _lastStats as Stats? = null;
-
 	function onUpdate(dc as Dc) {
+		dc.setColor(Graphics.COLOR_TRANSPARENT, Graphics.COLOR_BLACK);
+		dc.clear();
+
 		var now = Time.now();
 		var clock = Gregorian.info(now, Time.FORMAT_SHORT);
 		var stats = System.getSystemStats();
 
-		var updateDate = _lastTime == null
-			|| clock.day != _lastTime.day;
-		
-		var updateTime = _lastTime == null
-			|| clock.hour != _lastTime.hour
-			|| clock.min != _lastTime.min;
-		
-		var updateBattery = _lastStats == null
-			|| stats.battery != _lastStats.battery
-			|| stats.battery < _lowBattery
-			|| stats.charging != _lastStats.charging;
-			
-		if (!updateDate && !updateTime && !updateBattery) {
-			return;
-		}
-
-		if (updateDate) {
-			DrawDate(dc, clock);
-		}
-
-		if (updateTime) {
-			DrawTime(dc, clock);
-		}
-
-		if (updateBattery) {
-			DrawBattery(dc, clock, stats);
-		}
-		
-		_lastTime = clock;
-		_lastStats = stats;
-	}
-
-	function Clear(dc as Dc, area as Array<Number>?) {
-		if (area == null) {
-			dc.clearClip();
-		} else {
-			dc.setClip(area[0], area[1], area[2], area[3]);
-		}
-
-		dc.setColor(Graphics.COLOR_TRANSPARENT, Graphics.COLOR_BLACK);
-		dc.clear();
+		DrawDate(dc, clock);
+		DrawTime(dc, clock);
+		DrawBattery(dc, clock, stats);
 	}
 
 	function DrawDate(dc as Dc, clock as Gregorian.Info) {
-		Clear(dc, [_width*1/4, 0, _width/2, _height/4]);
-
 		var dateString = Lang.format("$1$ / $2$", [clock.month, clock.day]);
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-		dc.drawText(_center, _top-24, _font[32], DayOfWeek(clock.day_of_week), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawText(_center, _top+4, _font[48], dateString, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+		dc.drawText(_center, _top-24, _font["S"], DayOfWeek(clock.day_of_week), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+		dc.drawText(_center, _top+4, _font["M"], dateString, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 	}
 
 	function DrawTime(dc as Dc, clock as Gregorian.Info) {
-		Clear(dc, [0, _height*1/4, _width, _height/2]);
-
 		var hour = clock.hour % 12 == 0 ? 12 : clock.hour % 12;
 		var timeString = Lang.format("$1$:$2$", [hour, clock.min.format("%02d")]);
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-		dc.drawText(_center, _middle-8, _font[160], timeString, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+		dc.drawText(_center, _middle, _font["L"], timeString, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 	}
 
 	function DayOfWeek(num as Number) as String {
@@ -123,15 +79,13 @@ class View extends WatchUi.WatchFace {
 
 	private var BatteryIconWidth = 24;
 	function DrawBattery(dc as Dc, clock as Gregorian.Info, stats as Stats) {
-		Clear(dc, [_width*1/4, _height*3/4, _width/2, _height/4]);
-
 		var outline = BatteryOutlineColor(stats, clock.sec);
 		dc.setColor(outline, Graphics.COLOR_TRANSPARENT);
 		dc.drawRectangle(_center-BatteryIconWidth-4, _bottom-2, BatteryIconWidth, BatteryIconWidth/2);
 		dc.drawRectangle(_center-2, _bottom+2, 1, 4);
 
 		var batteryString = Lang.format("$1$%", [stats.battery.format("%1d")]);
-		dc.drawText(_center+2, _bottom, _font[32], batteryString, Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
+		dc.drawText(_center+2, _bottom+2, _font["S"], batteryString, Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
 
 		var color = BatteryFillColor(stats.battery);
 		dc.setColor(color, Graphics.COLOR_TRANSPARENT);
