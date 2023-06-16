@@ -2,10 +2,10 @@
 fileVersion=1
 
 # font settings
-fontName=Noto Sans Light
+fontName=Roboto Thin
 fontFile=
 charSet=0
-fontSize=192
+fontSize=120
 aa=1
 scaleH=100
 useSmoothing=1

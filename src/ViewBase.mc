@@ -5,7 +5,7 @@ import Toybox.System;
 import Toybox.Time;
 import Toybox.WatchUi;
 
-class View extends WatchUi.WatchFace {
+class ViewBase extends WatchUi.WatchFace {
 	
 	private var _width as Number = 0;
 	private var _height as Number = 0;
@@ -18,9 +18,9 @@ class View extends WatchUi.WatchFace {
 	
 	function initialize() {
 		_font = {
-			"L" => WatchUi.loadResource(Rez.Fonts.Large),
-			"M" => WatchUi.loadResource(Rez.Fonts.Medium),
-			"S" => WatchUi.loadResource(Rez.Fonts.Small)
+			"L" => WatchUi.loadResource(Rez.Fonts.RobotoLarge),
+			"M" => WatchUi.loadResource(Rez.Fonts.RobotoMedium),
+			"S" => WatchUi.loadResource(Rez.Fonts.RobotoSmall)
 		};
 		
 		WatchFace.initialize();
