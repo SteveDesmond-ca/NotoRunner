@@ -15,7 +15,10 @@ class App extends Application.AppBase {
     }
 
     function getInitialView() as Array<Views or InputDelegates>? {
-        return [ new RoboFace() ];
+        return [
+			// new NotoFace()
+			new RoboFace()
+		];
     }
 
     function onSettingsChanged() {

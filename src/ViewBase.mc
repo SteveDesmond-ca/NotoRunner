@@ -14,15 +14,12 @@ class ViewBase extends WatchUi.WatchFace {
 	private var _middle as Number = 0;
 	private var _bottom as Number = 0;
 
-	private var _font as Dictionary<String, FontResource> = {};
+	protected var _middleOffset as Number = 0;
+	protected var _bottomOffset as Number = 0;
+
+	protected var _font as Dictionary<String, FontResource> = {};
 	
 	function initialize() {
-		_font = {
-			"L" => WatchUi.loadResource(Rez.Fonts.RobotoLarge),
-			"M" => WatchUi.loadResource(Rez.Fonts.RobotoMedium),
-			"S" => WatchUi.loadResource(Rez.Fonts.RobotoSmall)
-		};
-		
 		WatchFace.initialize();
 	}
 
@@ -61,7 +58,7 @@ class ViewBase extends WatchUi.WatchFace {
 		var hour = clock.hour % 12 == 0 ? 12 : clock.hour % 12;
 		var timeString = Lang.format("$1$:$2$", [hour, clock.min.format("%02d")]);
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-		dc.drawText(_center, _middle, _font["L"], timeString, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+		dc.drawText(_center, _middle+_middleOffset, _font["L"], timeString, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 	}
 
 	function DayOfWeek(num as Number) as String {
@@ -85,7 +82,7 @@ class ViewBase extends WatchUi.WatchFace {
 		dc.drawRectangle(_center-2, _bottom+2, 1, 4);
 
 		var batteryString = Lang.format("$1$%", [stats.battery.format("%1d")]);
-		dc.drawText(_center+2, _bottom+2, _font["S"], batteryString, Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
+		dc.drawText(_center+2, _bottom+_bottomOffset, _font["S"], batteryString, Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
 
 		var color = BatteryFillColor(stats.battery);
 		dc.setColor(color, Graphics.COLOR_TRANSPARENT);
