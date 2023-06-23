@@ -1,2 +1,4 @@
-# NotoRunner
-A Noto Sans watchface for the Garmin Forerunner 245
+   # NotoRunner / RoboRunner
+  ## A simple digital watchface
+ ### for the Garmin Forerunner 245
+#### using Noto Sans and Roboto fonts

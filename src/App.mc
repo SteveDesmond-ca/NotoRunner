@@ -16,10 +16,19 @@ class App extends Application.AppBase {
 
     function getInitialView() as Array<Views or InputDelegates>? {
         return [
-			// new NotoFace()
-			new RoboFace()
+			initialView()
 		];
     }
+
+	function initialView() as ViewBase {
+		switch (WatchUi.loadResource(Rez.Strings.AppName)) {
+			case "NotoRunner":
+				return new NotoFace();
+			case "RoboRunner":
+				return new RoboFace();
+		}
+		throw new Exception("Invalid mode/AppName");
+	}
 
     function onSettingsChanged() {
         WatchUi.requestUpdate();

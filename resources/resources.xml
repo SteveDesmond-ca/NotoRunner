@@ -11,6 +11,6 @@
         <font id="RobotoLarge" filename="fonts/Roboto-Thin-120.fnt" antialias="true" filter="0123456789:" />
     </fonts>
     <strings>
-        <string id="AppName">NotoRunner</string>
+        <string id="AppName">RoboRunner</string>
     </strings>
 </resources>

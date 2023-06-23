@@ -3,7 +3,7 @@ SDK_HOME = /home/vtsv/.Garmin/ConnectIQ/Sdks/connectiq-sdk-lin-4.2.4-2023-04-05-
 DEPLOY = /media/removable/GARMIN/GARMIN/APPS/
 PRIVATE_KEY = ~/.Garmin/developer_key
 
-appName = NotoRunner
+appName = `grep AppName resources/resources.xml | sed -E 's/.+AppName">//' | sed -E 's/<.+//'`
 DEVICE = fr245
 devices = `grep 'iq:product id' manifest.xml | sed 's/.*iq:product id="\([^"]*\).*/\1/'`
 
@@ -11,7 +11,7 @@ clean:
 	rm -rf bin
 
 build: clean
-	@$(JAVA_HOME)/bin/java \
+	$(JAVA_HOME)/bin/java \
 	-Xms1g \
 	-Dfile.encoding=UTF-8 \
 	-Dapple.awt.UIElement=true \
@@ -23,7 +23,7 @@ build: clean
 	-r -l 0 
 
 dev:
-	@$(JAVA_HOME)/bin/java \
+	$(JAVA_HOME)/bin/java \
 	-Xms1g \
 	-Dfile.encoding=UTF-8 \
 	-Dapple.awt.UIElement=true \
@@ -39,10 +39,10 @@ run: dev
 	$(SDK_HOME)/bin/monkeydo bin/$(appName)_dev.prg $(DEVICE)
 
 deploy: build
-	@cp bin/$(appName).prg $(DEPLOY)
+	cp bin/$(appName).prg $(DEPLOY)
 
 package: clean
-	@$(JAVA_HOME)/bin/java \
+	$(JAVA_HOME)/bin/java \
 	-Dfile.encoding=UTF-8 \
   	-Dapple.awt.UIElement=true \
 	-jar "$(SDK_HOME)/bin/monkeybrains.jar" \
